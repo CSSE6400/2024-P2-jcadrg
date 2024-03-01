@@ -64,7 +64,7 @@ def update_todo(todo_id):
     todo.title = request.json.get('title', todo.title)
     todo.description = request.json.get('description', todo.description)
     todo.completed = request.json.get('completed', todo.completed)
-    todo.deadline_at = request.json.get('deadline_at', todo.deadline.at)
+    todo.deadline_at = request.json.get('deadline_at', todo.deadline_at)
     db.session.commit()
 
     return jsonify(todo.to_dict())
