@@ -62,6 +62,12 @@ def create_todo():
 @api.route('/todos/<int:todo_id>', methods=['PUT'])
 def update_todo(todo_id):
     """Update a todo item and return the updated item"""
+
+    #This variable is the keys set by a put method, we will be using this to verify if the input are a dictionary of valid keys
+    keys = set(request.json.keys())
+    if keys != {'title', 'description', 'completed', 'deadline_at'}:
+        return jsonify({'error': 'Key provided is not valid'}), 400
+    
     todo = Todo.query.get(todo_id)
     if todo is None:
         return jsonify({'error': 'Todo not found'}), 404
@@ -76,15 +82,8 @@ def update_todo(todo_id):
 
 @api.route('/todos/<int:todo_id>', methods=['DELETE'])
 def delete_todo(todo_id):
+
     """Delete a todo item and return the deleted item"""
-
-    #This variable is the keys set by a put method, we will be using this to verify if the input are a dict of valid keys
-    keys = set(request.json.keys())
-    existing_keys = {'title', 'description', 'completed', 'deadline_at'}
-    if (keys - existing_keys):
-        return jsonify({'error': 'Key is invalid'}), 400
-
-
     todo = Todo.query.get(todo_id)
     if todo is None:
         return jsonify({}), 200
