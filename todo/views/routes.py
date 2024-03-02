@@ -78,9 +78,10 @@ def update_todo(todo_id):
 def delete_todo(todo_id):
     """Delete a todo item and return the deleted item"""
 
-    #This variable is the keys set by a put method, we will be using this to verify if the input are a set of valid keys
+    #This variable is the keys set by a put method, we will be using this to verify if the input are a dict of valid keys
     keys = set(request.json.keys())
-    if keys != {'title', 'description', 'completed', 'deadline_at'}:
+    existing_keys = {'title', 'description', 'completed', 'deadline_at'}
+    if (keys - existing_keys):
         return jsonify({'error': 'Key is invalid'}), 400
 
 
