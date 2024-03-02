@@ -3,8 +3,10 @@ from . import db
 
 class Todo(db.Model):
     __tablename__ = 'todos'
+    'extend_existing=True'
 
     #This is how we define a column, this is also the primary key
+    id= db.Column(db.Integer,primary_key=True)
     #This is a manadatory column of 80 characters
     title = db.Column(db.String(80), nullable=False)
     #This is an optional column of 120 characters
