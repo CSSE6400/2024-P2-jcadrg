@@ -3,6 +3,7 @@ from . import db
 
 class Todo(db.Model):
     __tablename__ = 'todos'
+    __table_args__ = {'extend_existing': True}
 
     #This is how we define a column, this is also the primary key
     id = db.Column( db.Integer, primary_key=False )
