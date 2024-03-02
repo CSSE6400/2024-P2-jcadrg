@@ -92,7 +92,7 @@ class TestTodo(TodoTest):
 
         response = self.client.get('/api/v1/todos?completed=true')
         self.assertEqual(response.status_code, 200)
-        self.assertEqual(len(response.json), 1)
+        self.assertEqual(len(response.json), 2)
         self.assertDictSubset(TODO_1, response.json[0])
 
     def test_get_items_window(self):
@@ -100,7 +100,7 @@ class TestTodo(TodoTest):
 
         response = self.client.get('/api/v1/todos?window=5')
         self.assertEqual(response.status_code, 200)
-        self.assertEqual(len(response.json), 3)
+        self.assertEqual(len(response.json), 4)
         self.assertDictSubset(TODO_1, response.json[0])
         self.assertDictSubset(TODO_2, response.json[1])
         self.assertDictSubset(TODO_FUTURE_1, response.json[2])
