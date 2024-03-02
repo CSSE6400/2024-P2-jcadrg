@@ -40,6 +40,11 @@ def get_todo(todo_id):
 @api.route('/todos', methods=['POST'])
 def create_todo():
     """Create a new todo item and return the created item"""
+    #check valid keys
+    json_dict = request.get_json(force=True)
+    if 'school' not in json_dict:
+           return 'Error, school not found'
+
     todo = Todo(
         title=request.json.get('title'),
         description=request.json.get('description'),

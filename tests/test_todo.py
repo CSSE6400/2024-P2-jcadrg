@@ -118,13 +118,13 @@ class TestTodo(TodoTest):
         del todo['id']
         del todo['title']
         response = self.client.post('/api/v1/todos', json=todo)
-        self.assertEqual(response.status_code, 201)
+        self.assertEqual(response.status_code, 400)
         
     def test_post_item_extra_field(self):
         todo = TODO_1.copy()
         todo['extra'] = 'extra'
         response = self.client.post('/api/v1/todos', json=todo)
-        self.assertEqual(response.status_code, 201)
+        self.assertEqual(response.status_code, 400)
 
     def test_post_item_success_then_get(self):
         todo = TODO_1.copy()
@@ -161,7 +161,7 @@ class TestTodo(TodoTest):
 
         todo = {"extra": "extra"}
         response = self.client.put('/api/v1/todos/1', json=todo)
-        self.assertEqual(response.status_code, 200)
+        self.assertEqual(response.status_code, 400)
 
     def test_put_item_not_found(self):
         todo = {"title": "New Title"}
@@ -173,7 +173,7 @@ class TestTodo(TodoTest):
 
         todo = {"id": 2}
         response = self.client.put('/api/v1/todos/1', json=todo)
-        self.assertEqual(response.status_code, 200)
+        self.assertEqual(response.status_code, 400)
 
         response = self.client.get('/api/v1/todos/1')
         self.assertEqual(response.status_code, 200)
