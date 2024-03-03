@@ -40,10 +40,11 @@ def get_todo(todo_id):
 @api.route('/todos', methods=['POST'])
 def create_todo():
     """Create a new todo item and return the created item"""
-    #check valid keys
-    json_dict = request.get_json(force=True)
-    if 'school' not in json_dict:
-           return 'Error, school not found'
+
+    #This variable is the keys set by a post method, we will be using this to verify if the input are a dictionary of valid keys
+    keys = request.json.keys()
+    if keys != {'title', 'description', 'completed', 'deadline_at'}:
+        return jsonify({'error': 'Key provided is not valid'}), 400
 
     todo = Todo(
         title=request.json.get('title'),
