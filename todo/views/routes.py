@@ -41,11 +41,17 @@ def get_todo(todo_id):
 def create_todo():
     """Create a new todo item and return the created item"""
 
-    #This variable is the keys set by a post method, we will be using this to verify if the input are a dictionary of valid keys
-    keys = request.json.keys()
-    if keys != {'title', 'description', 'completed', 'deadline_at'}:
-        return jsonify({'error': 'Key provided is not valid'}), 400
+    #The sets below are the keys of the dict provided and the keys allowed
+    provided_keys = list(request.json.keys())
+    permitted_keys = ['title','description','completed','deadline_at']
 
+    for key in provided_keys:
+        if key not in permitted_keys:
+            return jsonify({'error': 'Invalid key/value'}), 400
+        
+    if 'title' not in provided_keys:
+          return jsonify({'error': 'Invalid key/value'}), 400
+    
     todo = Todo(
         title=request.json.get('title'),
         description=request.json.get('description'),
@@ -64,14 +70,23 @@ def create_todo():
 def update_todo(todo_id):
     """Update a todo item and return the updated item"""
 
-    #This variable is the keys set by a put method, we will be using this to verify if the input are a dictionary of valid keys
-    keys = set(request.json.keys())
-    if keys != {'title', 'description', 'completed', 'deadline_at'}:
-        return jsonify({'error': 'Key provided is not valid'}), 400
-    
     todo = Todo.query.get(todo_id)
     if todo is None:
         return jsonify({'error': 'Todo not found'}), 404
+    
+    #The sets below are the keys of the dict provided and the keys allowed
+    provided_keys = list(request.json.keys())
+    permitted_keys = ['title','description','completed','deadline_at']
+    
+
+    #This tuple pairs the keys 
+    keys_tuple = zip(provided_keys, permitted_keys)
+    
+    #Checking if every element of the tuple is equal, if they are, then the keys are all valid.
+    result = [a == b for a,b in keys_tuple]
+    if all(result) == False:
+        return jsonify({'error': 'Invalid key/value'}), 400
+    
     
     todo.title = request.json.get('title', todo.title)
     todo.description = request.json.get('description', todo.description)
